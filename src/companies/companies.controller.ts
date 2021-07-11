@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Param, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
+import { ParametersValidation } from 'src/common/pipes/parameters-validation.pipe';
 import { CompaniesService } from './companies.service';
 import { CreateCompanyDto } from './dtos/create-company.dto';
 import { UpdateCompanyDto } from './dtos/update-company.dto';
@@ -22,22 +23,21 @@ export class CompaniesController {
 
     @Get('/:company')
     async getOneCompany(
-        @Param('company') company: string): Promise<Company> {
+        @Param('company', ParametersValidation) company: string): Promise<Company> {
         return await this.companiesService.getCompanyById(company);
     }
 
-    @Put()
+    @Put('/:company')
     @UsePipes(ValidationPipe)
     async updateCompany(
-        @Param('/:company') company: string,
+        @Param('company', ParametersValidation) company: string,
         @Body() updateCompanyDto: UpdateCompanyDto): Promise<void> {
         return await this.companiesService.updateCompany(company, updateCompanyDto);
     }
 
-    @Post('/:company/employees/:employeeId')
-    @UsePipes(ValidationPipe)
-    async setCompanyEmployeer(
-        @Param() params: string[]): Promise<void> {
-        await this.companiesService.setCompanyEmployeer(params);
+    @Delete('/:company')
+    async DeleteCompany(
+        @Param('company', ParametersValidation) company: string): Promise<void> {
+        await this.companiesService.deleteCompany(company);
     }
 }

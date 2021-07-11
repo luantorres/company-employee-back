@@ -1,7 +1,7 @@
 import { IsEnum, IsMongoId, IsNotEmpty, IsNumber, IsPositive, IsString, MaxLength } from "class-validator";
 import { Roles } from "../interfaces/employee.interface";
 
-export class CreateEmployeeDto {
+export class UpdateEmployeeDto {
     @IsString()
     @IsNotEmpty()
     @MaxLength(200)
@@ -18,5 +18,5 @@ export class CreateEmployeeDto {
 
     @IsMongoId()
     @IsNotEmpty()
-    company: string;
+    company: any;
 }
