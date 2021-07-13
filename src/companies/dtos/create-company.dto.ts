@@ -1,10 +1,10 @@
 import { Type } from "class-transformer";
-import { IsInt, IsNotEmpty, IsNumberString, IsPositive, IsString, Length, Max, MaxLength, Min, MinLength, ValidateNested } from "class-validator";
+import { IsInt, IsMobilePhone, IsNotEmpty, IsNumberString, IsPositive, IsString, Length, Matches, Max, MaxLength, Min, MinLength, ValidateNested } from "class-validator";
 
 export class Address {
-    @IsNumberString()
-    @Length(8, 8)
+    @IsString()
     @IsNotEmpty()
+    @Matches('[0-9]{5}-[0-9]{3}')
     zipCode: string;
 
     @IsInt()
@@ -19,9 +19,7 @@ export class CreateCompanyDto {
     @IsNotEmpty()
     readonly name: string;
 
-    @MinLength(10)
-    @MaxLength(11)
-    @IsNotEmpty()
+    @IsMobilePhone('pt-BR')
     phone: string;
 
     @Type(() => Address)
