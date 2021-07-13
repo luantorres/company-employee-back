@@ -1,8 +1,8 @@
 import { Type } from "class-transformer";
-import { IsInt, IsMobilePhone, IsNotEmpty, IsNumber, IsNumberString, IsPositive, Length, Matches, MaxLength, MinLength, ValidateNested } from "class-validator";
+import { IsInt, IsMobilePhone, IsNotEmpty, IsNumber, IsNumberString, IsPositive, IsString, Length, Matches, MaxLength, MinLength, ValidateNested } from "class-validator";
 
 export class Address {
-    @IsNumber()
+    @IsString()
     @Matches('[0-9]{5}-[0-9]{3}')
     @IsNotEmpty()
     zipCode: string;
