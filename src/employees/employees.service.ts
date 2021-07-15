@@ -24,6 +24,8 @@ export class EmployeesService {
 
     async getAllEmployees(page: number = 1, limit: number = 10) {
         const query = {};
+        limit = Math.min(10, limit);
+        page = Math.max(1, page);
 
         return await this.employeeModel.paginate(
             query,

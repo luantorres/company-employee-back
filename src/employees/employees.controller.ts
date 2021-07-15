@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, DefaultValuePipe, Delete, Get, Param, ParseIntPipe, Post, Put, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ParametersValidation } from 'src/common/pipes/parameters-validation.pipe';
 import { CreateEmployeeDto } from './dtos/create-employee.dto';
 import { UpdateEmployeeDto } from './dtos/update-employee.dto';
@@ -17,8 +17,11 @@ export class EmployeesController {
     }
 
     @Get()
-    async getAllEmployees() {
-        return await this.employeesService.getAllEmployees();
+    async getAllEmployees(
+        @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+        @Query('limit', new DefaultValuePipe(20), ParseIntPipe) limit: number,
+    ) {
+        return await this.employeesService.getAllEmployees(page, limit);
     }
 
     @Get('/:employee')

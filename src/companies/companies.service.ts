@@ -7,7 +7,6 @@ import { CreateCompanyDto } from './dtos/create-company.dto';
 import { Address, Company } from './interfaces/company.interface';
 import { AxiosResponse } from 'axios';
 import { UpdateCompanyDto } from './dtos/update-company.dto';
-import { EmployeesService } from 'src/employees/employees.service';
 
 @Injectable()
 export class CompaniesService {
@@ -38,8 +37,10 @@ export class CompaniesService {
         return await createdCompany.save();
     }
 
-    async getAllCompanies(page: number = 1, limit: number = 10) {
+    async getAllCompanies(page: number = 1, limit: number = 5) {
         const query = {};
+        limit = Math.min(10, limit);
+        page = Math.max(1, page);
 
         return await this.companyModel.paginate(
             query,

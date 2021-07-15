@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, DefaultValuePipe, Delete, Get, Param, ParseIntPipe, Post, Put, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ParametersValidation } from 'src/common/pipes/parameters-validation.pipe';
 import { CompaniesService } from './companies.service';
 import { CreateCompanyDto } from './dtos/create-company.dto';
@@ -17,8 +17,11 @@ export class CompaniesController {
     }
 
     @Get()
-    async getAllCompanies() {
-        return await this.companiesService.getAllCompanies();
+    async getAllCompanies(
+        @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+        @Query('limit', new DefaultValuePipe(20), ParseIntPipe) limit: number,
+    ) {
+        return await this.companiesService.getAllCompanies(page, limit);
     }
 
     @Get('/:company')
