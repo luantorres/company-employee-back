@@ -5,39 +5,41 @@ import { UpdateEmployeeDto } from './dtos/update-employee.dto';
 import { EmployeesService } from './employees.service';
 import { Employee } from './interfaces/employee.interface';
 
-@Controller('api/employees')
+@Controller('api/companies')
 export class EmployeesController {
     constructor(private readonly employeesService: EmployeesService) {};
 
-    @Post()
+    @Post('/:company/employees')
     @UsePipes(ValidationPipe)
     async createEmployee(
-        @Body() createEmployeeDto: CreateEmployeeDto): Promise<Employee> {
-        return await this.employeesService.createEmployee(createEmployeeDto);
+        @Body() createEmployeeDto: CreateEmployeeDto,
+        @Param('company') company: string): Promise<Employee> {
+        return await this.employeesService.createEmployee(company, createEmployeeDto);
     }
 
-    @Get()
+    @Get('/:company/employees')
     async getAllEmployees(
         @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
         @Query('limit', new DefaultValuePipe(20), ParseIntPipe) limit: number,
+        @Param('company') company: string
     ) {
-        return await this.employeesService.getAllEmployees(page, limit);
+        return await this.employeesService.getAllEmployees(company, page, limit);
     }
 
-    @Get('/:employee')
+    @Get('/:company/employees/:employee')
     async getOneEmployee(
         @Param('employee') employee: string): Promise<Employee> {
         return await this.employeesService.getEmployeeById(employee);
     }
 
-    @Post('/:employee/companies/:company')
+    @Post('/:company/employees/:employee')
     @UsePipes(ValidationPipe)
     async setEmployeeCompany(
         @Param() params: string[]): Promise<void> {
         await this.employeesService.setEmployeerCompany(params);
     }
 
-    @Put('/:employee')
+    @Put('/employees/:employee')
     @UsePipes(ValidationPipe)
     async updateEmployee(
         @Param('employee', ParametersValidation) employee: string,
@@ -45,7 +47,7 @@ export class EmployeesController {
         return await this.employeesService.updateEmployee(employee, UpdateEmployeeDto);
     }
 
-    @Delete('/:employee')
+    @Delete('/employees/:employee')
     async DeleteEmployee(
         @Param('employee', ParametersValidation) employee: string): Promise<void> {
         await this.employeesService.deleteEmployee(employee);

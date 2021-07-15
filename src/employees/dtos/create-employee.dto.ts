@@ -15,8 +15,4 @@ export class CreateEmployeeDto {
     @IsEnum(Roles)
     @IsNotEmpty()
     role: Roles;
-
-    @IsMongoId()
-    @IsNotEmpty()
-    company: string;
 }

@@ -15,21 +15,21 @@ export class EmployeesService {
         private companiesService: CompaniesService
     ) {}
 
-    async createEmployee(createEmployeeDto: CreateEmployeeDto): Promise<Employee> {
-        const createdEmployee = new this.employeeModel(createEmployeeDto);
-        await this.companiesService.getCompanyById(createEmployeeDto.company);
+    async createEmployee(company, createEmployeeDto: CreateEmployeeDto): Promise<Employee> {
+        await this.companiesService.getCompanyById(company);
+        const createdEmployee = new this.employeeModel({ ...createEmployeeDto, company });
 
         return await createdEmployee.save();
     }
 
-    async getAllEmployees(page: number = 1, limit: number = 10) {
-        const query = {};
+    async getAllEmployees(company: string, page: number = 1, limit: number = 10) {
+        const query = { company };
         limit = Math.min(10, limit);
         page = Math.max(1, page);
 
         return await this.employeeModel.paginate(
             query,
-            { page, limit, populate: { path: 'company', select: 'name phone address' }
+            { page, limit, populate: { path: 'company', select: 'name' }
         }).then(result => {
             const { docs, ...pagination } = result;
             return { "employees": docs, ...pagination };
@@ -37,7 +37,7 @@ export class EmployeesService {
     }
 
     async getEmployeeById(employee: string): Promise<Employee> {
-        const employeeFound = await this.employeeModel.findOne({ _id: employee }).populate('company', 'name phone address').exec();
+        const employeeFound = await this.employeeModel.findOne({ _id: employee }).populate('company', 'name').exec();
 
         if (!employeeFound) {
             throw new NotFoundException(`Funcionário '${employee}' não encontrado!`);
@@ -67,7 +67,6 @@ export class EmployeesService {
 
     async updateEmployee(_id: string, updateEmployee: UpdateEmployeeDto): Promise<void> {
         const employeeFound = await this.employeeModel.findOne({ _id }).exec();
-        await this.companiesService.getCompanyById(updateEmployee.company);
 
         if (!employeeFound) {
             throw new NotFoundException(`Funcionário '${_id}' não encontrado!`);
@@ -77,9 +76,9 @@ export class EmployeesService {
     }
 
     async deleteEmployee(_id: string): Promise<any> {
-        const employeeFound = await this.employeeModel.findOne({ _id }).exec();
+        const deletedEmployee = await this.employeeModel.findOne({ _id }).exec();
 
-        if (!employeeFound) {
+        if (!deletedEmployee) {
             throw new NotFoundException(`Não foi encontrado um funcionário com o _id '${_id}' para exclusão!`);
         }
 
