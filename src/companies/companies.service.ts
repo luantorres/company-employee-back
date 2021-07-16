@@ -77,7 +77,7 @@ export class CompaniesService {
             this.parseAddress(updateCompany.address, viaCepAddress.data);
         }
 
-        await this.companyModel.findOneAndUpdate({ _id }, { $set: updateCompany }).exec();
+        await this.companyModel.findOneAndUpdate({ _id }, updateCompany, { new: true }).exec();
     }
 
     async deleteCompany(_id: string): Promise<any> {

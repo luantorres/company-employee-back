@@ -68,11 +68,12 @@ export class EmployeesService {
     async updateEmployee(_id: string, updateEmployee: UpdateEmployeeDto): Promise<void> {
         const employeeFound = await this.employeeModel.findOne({ _id }).exec();
 
+
         if (!employeeFound) {
             throw new NotFoundException(`Funcionário '${_id}' não encontrado!`);
         }
 
-        await this.employeeModel.findOneAndUpdate({ _id }, { $set: updateEmployee }).exec();
+        await this.employeeModel.findOneAndUpdate({ _id }, updateEmployee, { new: true }).exec();
     }
 
     async deleteEmployee(_id: string): Promise<any> {

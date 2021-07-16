@@ -4,7 +4,7 @@ import * as mongoosePaginate from 'mongoose-paginate';
 export const EmployeeSchema = new mongoose.Schema({
     name: { type: String },
     salary: { type: Number },
-    roles: { type: String },
+    role: { type: String },
     company: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Company'
