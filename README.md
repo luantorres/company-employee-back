@@ -42,5 +42,64 @@ $ npm run start:prod
 
 O servidor iniciará por padrão na porta:8080 - acesse: <http://localhost:8080>
 
+## Endpoints Empresa
+
+### GET all `/api/companies`
+
+### GET one `/api/companies/:companyId`
+
+### POST `/api/companies/:companyId`
+```bash
+{
+	"name": "",
+	"phone": "(16)9999-9999",
+	"address": {
+		"zipCode": "00000-000",
+        "number": 0
+	}
+}
+```
+
+### PUT
+```bash
+{
+	"phone": "(16)99999-9999",
+	"address": {
+		"zipCode": "00000-000",
+        "number": 0
+	}
+}
+```
+
+### DELETE de uma empresa `/api/companies/:companyId`
+
+## Endpoints Funcionários
+
+### GET all `/api/companies/:companyId/employees`
+
+### GET one `/api/companies/:companyId/employees/:employeeId`
+
+### POST `/api/companies/:companyId/employees`
+```json
+{
+	"name": "",
+	"salary": 0,
+	"role": ""
+}
+```
+
+### PUT `/api/companies/:companyId/employees/:employeeId`
+```json
+{
+	"phone": "(16)99999-9999",
+	"address": {
+		"zipCode": "00000-000",
+        "number": 0
+	}
+}
+```
+
+### DELETE `/api/companies/employees/:employeeId`
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
